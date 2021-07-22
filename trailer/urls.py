@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import url
+from django.urls import path
 from . import views 
 
 urlpatterns = [
-    url(r'^$',views.get_movies, name="get_movies"),
-    # url(r'movies/<int:id>/',views.movie_details, name ="movie_detail"),
+    path('',views.get_movies, name="get_movies"),
+    path('youtube/<id>',views.youtube,name = 'youtube'),
 ]

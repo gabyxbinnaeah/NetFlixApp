@@ -1,27 +1,32 @@
 from django.shortcuts import render
+import requests,json
 from .models import Movie
-import requests
+from movie import settings
+from decouple import config
+import os
+from googleapiclient.discovery import build
+
+def index(request,category):
+    url='https://api.themoviedb.org/3/movie/{}?api_key={}'
+    api_key='f5122c8447d204dde714ca3eae6e3be7'
+    formated_url=url.format(category,api_key)
+    final_url=requests.get(formated_url).json()
+    return final_url
 
 def get_movies(request):
+    all_movies = index(request,'popular')['results']    
+    context={"all_movies":all_movies}
+    return render(request,'movies/movie.html',context)
 
-    popular_url='https://api.themoviedb.org/3/movie/popular?api_key=d3b72290034dd8b0a485d50b2ba0c46f'
-    nowShowing_url=''
-    response=requests.get(popular_url)
-    data=response.json()
-    movies=data['results'] 
- 
-    for contents in movies:
-        movie_data=Movie(
-            title=contents['title'],
-            overview =contents['overview'],
-            poster_path=contents['poster_path'],
-            vote_average=contents['vote_average'],
-            vote_count=contents['vote_count']
-            )
-        saved_data=movie_data.save()
-        all_movies=Movie.objects.all()
-    return render(request, 'movies/movie.html', {"all_movies":all_movies})
-
-
-
-
+def youtube(request,id):
+    youtubeapi =  config('youtubeapi')
+    popular = index(request,'popular')
+   
+    pp = ''
+    for p in popular['results']:
+        if str(p['id'])==str(id):
+            pp = p['title']
+    youtube = build('youtube','v3',developerKey = youtubeapi)
+    req = youtube.search().list(q= pp+'trailer',part = 'snippet',type= 'video').execute()
+    
+    return render(request,'youtube.html',{'response':req})

@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'netflix',
+        'NAME': 'netflixmovie',
         'USER':'moringa',
-        'PASSWORD':'Silfanus12'
+        'PASSWORD':'qwerty'
     }
 }
 

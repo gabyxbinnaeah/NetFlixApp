@@ -1,0 +1,14 @@
+{%extends 'movies/base.html'%}
+{%block content%}
+<div class="container">
+    <div class="row">
+        {%for res in response.items%}
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <iframe id="video" width="654" height="380" src="//www.youtube.com/embed/{{res.id.videoId}}?rel=0"
+                frameborder="5" allowfullscreen></iframe>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+{%endblock content%}
